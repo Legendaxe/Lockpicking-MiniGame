@@ -3166,7 +3166,7 @@ MonoBehaviour:
   animator: {fileID: 113418025}
   pickSpeed: 1
   lockRotationSpeed: 1
-  lockOpenRange: 0
+  lockOpenRange: 0.001
 --- !u!1 &267862911
 GameObject:
   m_ObjectHideFlags: 0
@@ -9156,7 +9156,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24618
+  m_Name: pb_Mesh24620
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9388,7 +9388,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24686
+  m_Name: pb_Mesh24688
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Lockpick3d : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private float pickSpeed;
-    [SerializeField] private float lockRotationSpeed;
-    [SerializeField] private float lockOpenRange;
+    [SerializeField] private float pickSpeed = 1f;
+    [SerializeField] private float lockRotationSpeed = 1f;
+    [SerializeField] private float lockOpenRange = 0.5f;
 
     private float _pickRotation = 0.5f;
-    private float _pickPosition;
+    private float _lockPosition;
     private float _pickOpenRotation;
 
     public float PickRotation
@@ -22,33 +23,49 @@ public class Lockpick3d : MonoBehaviour
         }
     }
 
-    public float PickPosition
+    public float LockPosition
     {
-        get => _pickPosition;
+        get => _lockPosition;
         set
         {
-            _pickPosition = value;
-            _pickPosition = Mathf.Clamp(_pickPosition, 0, 1);
+            _lockPosition = value;
+            _lockPosition = Mathf.Clamp(_lockPosition, 0, MaxLockPosition);
         }
     }
 
+    private float MaxLockPosition
+        => 1 - Mathf.Clamp(MathF.Abs(_pickRotation - _pickOpenRotation) - lockOpenRange, 0, 1);
+
     private void Start()
     {
-        _pickOpenRotation = UnityEngine.Random.value;
+        InitializeNewLock();
     }
     
 
     private void Update()
     {
         HandleInput();
-        
+
         UpdateAnimator();
+    }
+
+    private void HandleLockPosition()
+    {
+        if (_lockPosition >= 1f)
+        {
+            Debug.Log("You Win!!!");
+        }
+    }
+
+    private void InitializeNewLock()
+    {
+        _pickOpenRotation = UnityEngine.Random.value;
     }
 
     private void UpdateAnimator()
     {
         animator.SetFloat("LockPosition", _pickRotation);
-        animator.SetFloat("LockOpen", _pickPosition);
+        animator.SetFloat("LockOpen", _lockPosition);
     }
 
     private void HandleInput()
@@ -56,11 +73,12 @@ public class Lockpick3d : MonoBehaviour
         PickRotation += Input.GetAxis("Horizontal") * pickSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.Space))
         {
-            PickPosition += lockRotationSpeed * Time.deltaTime;
+            LockPosition += lockRotationSpeed * Time.deltaTime;
+            HandleLockPosition();
         }
         else
         {
-            _pickPosition -= lockRotationSpeed * Time.deltaTime;
+            _lockPosition -= lockRotationSpeed * Time.deltaTime;
         }
     }
 }
